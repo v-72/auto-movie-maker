@@ -29,7 +29,8 @@ class VideoMaker():
         font_size = FONT_SIZE,
         font_color = FONT_COLOR,
     ):
-        pass
+        self.image_folder = image_folder
+        self.index = 0
 
     def create_video(
         self,
@@ -50,8 +51,10 @@ class VideoMaker():
 
 
     def generate_image_clip(self,image,subtitles):
+            print(self.index)
             image_clip = ImageClip(image).set_duration(IMAGE_DURATION).crossfadein(TRANSITION_DURATION).crossfadeout(TRANSITION_DURATION)
-            txt_clip = TextClip(subtitles[0],fontsize=FONT_SIZE,color=FONT_COLOR)
+            txt_clip = TextClip(subtitles[self.index],fontsize=FONT_SIZE,color=FONT_COLOR)
+            self.index += 1
             txt_clip = txt_clip.set_pos(SUBTITLE_POSITION).set_duration(IMAGE_DURATION)
             video_clip = CompositeVideoClip([image_clip, txt_clip])
             # INDEX += 1
