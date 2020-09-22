@@ -6,7 +6,9 @@ Default parameters
 """
 INDEX = 0
 FONT_SIZE = 58
-FONT_COLOR = "yellow"
+FONT_COLOR = "white"
+FONT_STROKE_COLOR = "black"
+STROKE_WIDTH = 1.5
 IMAGE_DURATION = 5
 TRANSITION_DURATION = 0.5
 INTRO_NAME = "tip10intro.mov"
@@ -51,15 +53,17 @@ class VideoMaker():
 
 
     def generate_image_clip(self,image,subtitles):
-            print(self.index)
             image_clip = ImageClip(image).set_duration(IMAGE_DURATION).crossfadein(TRANSITION_DURATION).crossfadeout(TRANSITION_DURATION)
-            txt_clip = TextClip(subtitles[self.index],fontsize=FONT_SIZE,color=FONT_COLOR)
+            txt_clip = TextClip(subtitles[self.index],fontsize=FONT_SIZE,color=FONT_COLOR, stroke_color=FONT_STROKE_COLOR,stroke_width=STROKE_WIDTH)
             self.index += 1
             txt_clip = txt_clip.set_pos(SUBTITLE_POSITION).set_duration(IMAGE_DURATION)
             video_clip = CompositeVideoClip([image_clip, txt_clip])
             # INDEX += 1
             return video_clip
 
+    """
+        CHECK IMAGE RESULATION AND ADJEST IT ACCORDING TO OUTPUT
+    """
     def preprocess_image(self,image):
             pass
 
