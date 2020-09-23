@@ -1,14 +1,14 @@
 import os
 from moviepy.editor import *
-
+from utils.scale_image import Image
 """
 Default parameters
 """
 INDEX = 0
 FONT_SIZE = 58
-FONT_COLOR = "white"
-FONT_STROKE_COLOR = "black"
-STROKE_WIDTH = 1.5
+FONT_COLOR = "yellow4"
+FONT_STROKE_COLOR = "yellow1"
+STROKE_WIDTH = 0.5
 IMAGE_DURATION = 5
 TRANSITION_DURATION = 0.5
 INTRO_NAME = "tip10intro.mov"
@@ -41,6 +41,7 @@ class VideoMaker():
         output_fps=OUTPUT_FPS
         ):
         images  = self.get_image_files(image_folder)
+        images.sort()
         subtitles = self.get_subtitles(image_folder)
         clips = [self.generate_image_clip(m,subtitles) for m in images]
         # clips = [c.resize( (1920, 1080) ) for c in clips]
@@ -53,19 +54,21 @@ class VideoMaker():
 
 
     def generate_image_clip(self,image,subtitles):
-            image_clip = ImageClip(image).set_duration(IMAGE_DURATION).crossfadein(TRANSITION_DURATION).crossfadeout(TRANSITION_DURATION)
-            txt_clip = TextClip(subtitles[self.index],fontsize=FONT_SIZE,color=FONT_COLOR, stroke_color=FONT_STROKE_COLOR,stroke_width=STROKE_WIDTH)
+            _image = self.preprocess_image(image)
+            image_clip = ImageClip(_image).set_duration(IMAGE_DURATION).crossfadein(TRANSITION_DURATION).crossfadeout(TRANSITION_DURATION)
+            txt_clip = TextClip(subtitles[self.index],size=(1280,720),fontsize=FONT_SIZE,color=FONT_COLOR, stroke_color=FONT_STROKE_COLOR,stroke_width=STROKE_WIDTH,method="caption",align="South")
             self.index += 1
-            txt_clip = txt_clip.set_pos(SUBTITLE_POSITION).set_duration(IMAGE_DURATION)
+            txt_clip = txt_clip.set_pos(SUBTITLE_POSITION).set_duration(IMAGE_DURATION - 0.20)
             video_clip = CompositeVideoClip([image_clip, txt_clip])
-            # INDEX += 1
             return video_clip
 
     """
         CHECK IMAGE RESULATION AND ADJEST IT ACCORDING TO OUTPUT
     """
     def preprocess_image(self,image):
-            pass
+           img = Image(image)
+           _image = img.resize()
+           return _image
 
     def intro_video(self,image_folder):
             return VideoFileClip(image_folder+"/"+INTRO_NAME)
@@ -85,6 +88,7 @@ class VideoMaker():
                     image.endswith(".jpeg")
                 )
             ]
+
 
     def get_subtitles(self,image_folder):
             subtitle_file = open(image_folder+'/'+SUBTITLE_FILE, 'r') 
