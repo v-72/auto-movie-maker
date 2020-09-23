@@ -56,7 +56,7 @@ class VideoMaker():
     def generate_image_clip(self,image,subtitles):
             _image = self.preprocess_image(image)
             image_clip = ImageClip(_image).set_duration(IMAGE_DURATION).crossfadein(TRANSITION_DURATION).crossfadeout(TRANSITION_DURATION)
-            txt_clip = TextClip(subtitles[self.index],size=(1280,720),fontsize=FONT_SIZE,color=FONT_COLOR, stroke_color=FONT_STROKE_COLOR,stroke_width=STROKE_WIDTH,method="caption",align="South West")
+            txt_clip = TextClip(subtitles[self.index],size=(1280,720),fontsize=FONT_SIZE,color=FONT_COLOR, stroke_color=FONT_STROKE_COLOR,stroke_width=STROKE_WIDTH,method="caption",align="South")
             self.index += 1
             txt_clip = txt_clip.set_pos(SUBTITLE_POSITION).set_duration(IMAGE_DURATION - 0.20)
             video_clip = CompositeVideoClip([image_clip, txt_clip])
