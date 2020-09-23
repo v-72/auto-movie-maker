@@ -1,6 +1,6 @@
 import os
 from moviepy.editor import *
-
+from utils.scale_image import Image
 """
 Default parameters
 """
@@ -53,7 +53,8 @@ class VideoMaker():
 
 
     def generate_image_clip(self,image,subtitles):
-            image_clip = ImageClip(image).set_duration(IMAGE_DURATION).crossfadein(TRANSITION_DURATION).crossfadeout(TRANSITION_DURATION)
+            _image = self.preprocess_image(image)
+            image_clip = ImageClip(_image).set_duration(IMAGE_DURATION).crossfadein(TRANSITION_DURATION).crossfadeout(TRANSITION_DURATION)
             txt_clip = TextClip(subtitles[self.index],fontsize=FONT_SIZE,color=FONT_COLOR, stroke_color=FONT_STROKE_COLOR,stroke_width=STROKE_WIDTH)
             self.index += 1
             txt_clip = txt_clip.set_pos(SUBTITLE_POSITION).set_duration(IMAGE_DURATION)
@@ -65,7 +66,10 @@ class VideoMaker():
         CHECK IMAGE RESULATION AND ADJEST IT ACCORDING TO OUTPUT
     """
     def preprocess_image(self,image):
-            pass
+           img = Image(image)
+           _image = img.resize()
+           print(dir(image))
+           return _image
 
     def intro_video(self,image_folder):
             return VideoFileClip(image_folder+"/"+INTRO_NAME)
