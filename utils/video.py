@@ -82,7 +82,7 @@ class VideoMaker():
 
     def add_text_to_image(self,subtitles,index):
             pass
-
+    
     def get_image_files(self,image_folder):
             return [
                 image_folder+'/'+image 
@@ -93,7 +93,10 @@ class VideoMaker():
                 )
             ]
 
-
+    """
+        Read subtitle file and return arrray
+        'new line \n' is the delimiter
+    """
     def get_subtitles(self):
             subtitle_file = open(self.image_folder+'/'+self.subtitle_file, 'r') 
             count = 0
