@@ -32,25 +32,29 @@ class VideoMaker():
         font_color = FONT_COLOR,
     ):
         self.image_folder = image_folder
+        self.output_file_name = output_file_name
+        self.add_subtitle = False
+        self.subtitle_file = SUBTITLE_FILE
+        self.intro_name = INTRO_NAME
+        self.end_screen_name = END_SCREEN_NAME
+        self.subtitle_position = END_SCREEN_NAME
+        self.font_size = FONT_SIZE
+        self.font_color = FONT_COLOR
+        self.output_fps = OUTPUT_FPS
         self.index = 0
 
-    def create_video(
-        self,
-        image_folder=IMAGE_FOLDER,
-        output=OUTPUT_FILE_NAME,
-        output_fps=OUTPUT_FPS
-        ):
-        images  = self.get_image_files(image_folder)
+    def create_video(self):
+        images  = self.get_image_files(self.image_folder)
         images.sort()
-        subtitles = self.get_subtitles(image_folder)
+        subtitles = self.get_subtitles()
         clips = [self.generate_image_clip(m,subtitles) for m in images]
         # clips = [c.resize( (1920, 1080) ) for c in clips]
-        clipStart = self.intro_video(image_folder)
-        clipEnd = self.end_video(image_folder)
+        clipStart = self.intro_video(self.image_folder)
+        clipEnd = self.end_video(self.image_folder)
         clips.append(clipEnd)
         clips = [clipStart] + clips
         concat_clip = concatenate_videoclips(clips, method="compose")
-        concat_clip.write_videofile(output, fps=output_fps)
+        concat_clip.write_videofile(filename=self.output_file_name, fps=self.output_fps)
 
 
     def generate_image_clip(self,image,subtitles):
@@ -71,10 +75,10 @@ class VideoMaker():
            return _image
 
     def intro_video(self,image_folder):
-            return VideoFileClip(image_folder+"/"+INTRO_NAME)
+            return VideoFileClip(image_folder+"/"+self.intro_name)
 
     def end_video(self,image_folder):
-            return VideoFileClip(image_folder+"/"+END_SCREEN_NAME)
+            return VideoFileClip(image_folder+"/"+self.end_screen_name)
 
     def add_text_to_image(self,subtitles,index):
             pass
@@ -90,8 +94,8 @@ class VideoMaker():
             ]
 
 
-    def get_subtitles(self,image_folder):
-            subtitle_file = open(image_folder+'/'+SUBTITLE_FILE, 'r') 
+    def get_subtitles(self):
+            subtitle_file = open(self.image_folder+'/'+self.subtitle_file, 'r') 
             count = 0
             subtitles = []
             for line in subtitle_file: 
