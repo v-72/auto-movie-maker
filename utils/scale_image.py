@@ -2,7 +2,10 @@ import cv2
 
 DEFAULT_HEIGHT = 720
 DEFAULT_WIDTH = 1280
-
+"""
+    Change image resolution
+    Defaults to  1280 * 720
+"""
 class Image():
     def __init__(self, image,height=DEFAULT_HEIGHT,width=DEFAULT_WIDTH):
         self.image = image
