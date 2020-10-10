@@ -68,6 +68,7 @@ class VideoMaker():
 
     """
         CHECK IMAGE RESULATION AND ADJEST IT ACCORDING TO OUTPUT
+        
     """
     def preprocess_image(self,image):
            img = Image(image)
